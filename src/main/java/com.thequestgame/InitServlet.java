@@ -22,6 +22,7 @@ public class InitServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession currentSession = req.getSession();
+        resp.setContentType("text/html;charset=UTF-8");
         BufferedReader reader = new BufferedReader(req.getReader());
         name = reader.readLine();
         currentSession.setAttribute("name", name);

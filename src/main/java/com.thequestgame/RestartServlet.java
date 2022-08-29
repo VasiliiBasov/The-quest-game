@@ -1,4 +1,6 @@
 package com.thequestgame;
 
-public class RestartServlet {
+import javax.servlet.http.HttpServlet;
+
+public class RestartServlet extends HttpServlet {
 }

@@ -18,16 +18,19 @@ public class StatisticServlet extends HttpServlet {
         HttpSession currentSession = req.getSession();
         name = (String) currentSession.getAttribute("name");
         ipAdress = (String) currentSession.getAttribute("ipAdress");
-        System.out.println("Статистика:");
-        System.out.println("IP adress: " + ipAdress);
-        System.out.println("Имя в игре: " + name);
-        System.out.println("Количество игр: ");
-        resp.setContentType("text/html");
+        resp.setContentType("text/html;charset=UTF-8");
         PrintWriter printWriter = resp.getWriter();
-        printWriter.write("Статисика: \n");
-        printWriter.write("IP adress: " + ipAdress + "\n");
-        printWriter.write("Имя в игре: " + name + "\n");
-        printWriter.write("Количество игр: " + 0);
-        printWriter.close();
+        try {
+            printWriter.println("<form>");
+            printWriter.println("<fieldset>");
+            printWriter.println("<legend>Статистика</legend>");
+            printWriter.println("<p><label for=\"IPadress\" id=\"ipAdress\">IP adress: </label>" + ipAdress + "</p>");
+            printWriter.println("<p><label for=\"name\" id=\"name\">Имя в игре: </label>" + name + "</p>");
+            printWriter.println("<p><label for=\"GameCount\" id=\"gameCount\">Игр сыграно: </label>" + 0 + "</p>");
+            printWriter.println("</fieldset>");
+            printWriter.println("</form>");
+        } finally {
+            printWriter.close();
+        }
     }
 }
