@@ -1,6 +1,5 @@
 package com.thequestgame;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -8,14 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.*;
 
 @WebServlet(name = "LogicServlet", value = "/logic")
 public class LogicServlet extends HttpServlet {
-    private static ArrayList<Question> questions = new ArrayList<>();
-    private static Question firstQuestion;
+    private static final ArrayList<Question> questions = new ArrayList<>();
+    private static final Question firstQuestion;
 
     static {
         Question q3 = new Question("Ты поднялся на мостик. \nКто ты?");
@@ -34,30 +32,29 @@ public class LogicServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession currentSession = req.getSession();
         resp.setContentType("text/html;charset=UTF-8");
-        PrintWriter printWriter = resp.getWriter();
 
-        try {
+        try (PrintWriter printWriter = resp.getWriter()) {
             printWriter.println("<h1><b>" + firstQuestion.getNAME() + "</b></h1>");
             currentSession.setAttribute("lastQuestion", firstQuestion);
-            for (String answer:firstQuestion.getAnswers()) {
+            printWriter.println("<img src=\"static/UFO.jpg\" style=\"height: 300px; width: 500px;left: 100px\" >");
+            printWriter.println("<br>");
+            for (String answer : firstQuestion.getAnswers()) {
                 printWriter.println("<INPUT TYPE=\"RADIO\" NAME=\"Answer\" VALUE =\"" + answer + "\">" + answer + "<br>");
             }
-        } finally {
-            printWriter.close();
+            printWriter.println("<br>");
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession currentSession = req.getSession();
         resp.setContentType("text/html;charset=UTF-8");
         BufferedReader reader = new BufferedReader(req.getReader());
         String quest = reader.readLine();
-        PrintWriter printWriter = resp.getWriter();
-        try {
+        try (PrintWriter printWriter = resp.getWriter()) {
             Question question = (Question) currentSession.getAttribute("lastQuestion");
             question = question.getQuestionByAnswer(quest);
             printWriter.println("<h1><b>" + question.getNAME() + "</b></h1>");
@@ -65,12 +62,9 @@ public class LogicServlet extends HttpServlet {
             if (question.getAnswers().isEmpty()) {
 
                 resp.setStatus(250);
-            }
-            else for (String answer:question.getAnswers()) {
+            } else for (String answer : question.getAnswers()) {
                 printWriter.println("<INPUT TYPE=\"RADIO\" NAME=\"Answer\" VALUE =\"" + answer + "\">" + answer + "<br>");
             }
-        } finally {
-            printWriter.close();
         }
     }
 }
