@@ -56,7 +56,12 @@ function btnClick()
 </script>
 <script>
     function restart() {
-        console.log("restart");
+        $.get("/restart", function () {
+            getQuestion();
+            getStatistics();
+            document.getElementById( "answerButton" ).setAttribute( "onClick", "javascript: btnClick();" );
+            document.getElementById( "answerButton" ).innerText = "Ответить";
+        });
     }
 </script>
 </html>

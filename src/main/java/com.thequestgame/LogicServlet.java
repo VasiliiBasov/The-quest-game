@@ -62,7 +62,10 @@ public class LogicServlet extends HttpServlet {
             question = question.getQuestionByAnswer(quest);
             printWriter.println("<h1><b>" + question.getNAME() + "</b></h1>");
             currentSession.setAttribute("lastQuestion", question);
-            if (question.getAnswers().isEmpty()) resp.setStatus(250);
+            if (question.getAnswers().isEmpty()) {
+
+                resp.setStatus(250);
+            }
             else for (String answer:question.getAnswers()) {
                 printWriter.println("<INPUT TYPE=\"RADIO\" NAME=\"Answer\" VALUE =\"" + answer + "\">" + answer + "<br>");
             }
