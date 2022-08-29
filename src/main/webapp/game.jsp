@@ -32,7 +32,6 @@
     function getStatistics() {
         $.get("/statistics", function (data) {
             $( ".feedback_form" ).html( data );
-            console.log(data);
         });
     }
     getStatistics();
